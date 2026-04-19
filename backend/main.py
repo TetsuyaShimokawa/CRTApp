@@ -1,6 +1,5 @@
 import csv
 import io
-import os
 import random
 from datetime import datetime
 
@@ -13,11 +12,10 @@ from models.result import Result
 
 app = FastAPI()
 
-_extra = os.environ.get("FRONTEND_URL", "")
 origins = [
+    "https://crtapp-frontend.onrender.com",
     "http://localhost:5173",
     "http://localhost:5174",
-    *([_extra] if _extra else []),
 ]
 
 app.add_middleware(
