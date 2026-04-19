@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function QuestionScreen({ question, index, total, onNext }) {
   const [response, setResponse] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    setResponse("");
+    setSubmitting(false);
+  }, [index]);
 
   function handleNext() {
+    if (submitting) return;
+    setSubmitting(true);
     onNext(response);
-    setResponse("");
   }
 
   return (
@@ -26,6 +33,7 @@ export default function QuestionScreen({ question, index, total, onNext }) {
             onKeyDown={(e) => e.key === "Enter" && handleNext()}
             style={styles.input}
             inputMode="numeric"
+            disabled={submitting}
           />
           {question.unit && (
             <span style={styles.unit}>{question.unit}</span>
@@ -33,7 +41,7 @@ export default function QuestionScreen({ question, index, total, onNext }) {
         </div>
 
         <div style={styles.buttonRow}>
-          <button onClick={handleNext} style={styles.button}>
+          <button onClick={handleNext} style={{ ...styles.button, opacity: submitting ? 0.5 : 1, cursor: submitting ? "not-allowed" : "pointer" }} disabled={submitting}>
             次へ
           </button>
         </div>

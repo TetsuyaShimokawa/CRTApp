@@ -40,7 +40,12 @@ def get_questions():
 def post_result(result: Result):
     if result.subject_id not in results_store:
         results_store[result.subject_id] = []
-    results_store[result.subject_id].append(result.model_dump())
+    entries = results_store[result.subject_id]
+    for i, entry in enumerate(entries):
+        if entry["question_index"] == result.question_index:
+            entries[i] = result.model_dump()
+            return {"status": "ok"}
+    entries.append(result.model_dump())
     return {"status": "ok"}
 
 

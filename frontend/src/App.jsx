@@ -17,6 +17,7 @@ function App() {
       setSubjectId(id);
       setQuestions(qs);
       setCurrentIndex(0);
+      setError("");
       setScreen("question");
     } catch {
       setError("問題の取得に失敗しました。バックエンドが起動しているか確認してください。");
@@ -24,6 +25,7 @@ function App() {
   }
 
   async function handleNext(response) {
+    if (screen !== "question") return;
     const q = questions[currentIndex];
     try {
       await postResult({
