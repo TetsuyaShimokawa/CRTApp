@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: crtapp-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: FRONTEND_URL
+        value: https://crtapp-frontend.onrender.com  # ← フロントエンドのURLに変更
+
+  - type: web
+    name: crtapp-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://crtapp-backend.onrender.com  # ← バックエンドのURLに変更
