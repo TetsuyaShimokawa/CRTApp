@@ -29,14 +29,14 @@ app.add_middleware(
 results_store: dict[str, list[dict]] = {}
 
 
-@app.get("/api/questions")
+@app.get("/api/crt/questions")
 def get_questions():
     shuffled = QUESTIONS.copy()
     random.shuffle(shuffled)
     return shuffled
 
 
-@app.post("/api/results")
+@app.post("/api/crt/results")
 def post_result(result: Result):
     if result.subject_id not in results_store:
         results_store[result.subject_id] = []
@@ -49,7 +49,7 @@ def post_result(result: Result):
     return {"status": "ok"}
 
 
-@app.get("/api/results/{subject_id}/csv")
+@app.get("/api/crt/results/{subject_id}/csv")
 def download_csv(subject_id: str):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"AnsCRT_{subject_id}_{timestamp}.csv"
